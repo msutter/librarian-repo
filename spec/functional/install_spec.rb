@@ -11,13 +11,13 @@ describe "Functional - Install" do
   end
 
   it "displays install help message" do
-    output, status = execute_captured("bin/librarian-puppet help install")
+    output, status = execute_captured("bin/librarian-repo help install")
     output.should_not include("ERROR")
     output.should_not include("Could not find command")
     status.should == 0
   end
 
-  describe "when running 'librarian-puppet install'" do
+  describe "when running 'librarian-repo install'" do
     temp_directory = nil
 
     before :each do
@@ -32,21 +32,21 @@ describe "Functional - Install" do
     end
 
     it "install the repos in a temp directory" do
-      output, status = execute_captured("bin/librarian-puppet install --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
+      output, status = execute_captured("bin/librarian-repo install --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
 
       status.should == 0
       Dir.entries(temp_directory).should =~ %w|. .. apache ntp trashfile dnsclient testlps|
     end
 
     it "with --clean it cleans the directory before installing the repos in a temp directory" do
-      output, status = execute_captured("bin/librarian-puppet install --clean --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
+      output, status = execute_captured("bin/librarian-repo install --clean --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
 
       status.should == 0
       Dir.entries(temp_directory).should =~ %w|. .. apache ntp dnsclient testlps|
     end
 
     it "with --verbose it outputs progress messages" do
-      output, status = execute_captured("bin/librarian-puppet install --verbose --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
+      output, status = execute_captured("bin/librarian-repo install --verbose --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
 
       status.should == 0
       output.should include('##### processing module apache')
@@ -63,7 +63,7 @@ describe "Functional - Install" do
       end
 
       it 'without clean it should only install ntp' do
-        output, status = execute_captured("bin/librarian-puppet install --verbose --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
+        output, status = execute_captured("bin/librarian-repo install --verbose --path=#{temp_directory} --Repofile=spec/fixtures/Repofile")
         status.should == 0
         output.should include('Module apache already installed')
         Dir.entries(temp_directory).should =~ %w|. .. apache ntp dnsclient testlps|

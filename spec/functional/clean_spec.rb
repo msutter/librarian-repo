@@ -4,13 +4,13 @@ require 'tmpdir'
 
 describe "Functional - Clean" do
   it "displays install help message" do
-    output, status = execute_captured("bin/librarian-puppet help clean")
+    output, status = execute_captured("bin/librarian-repo help clean")
     output.should_not include("ERROR")
     output.should_not include("Could not find command")
     status.should == 0
   end
 
-  describe "when running 'librarian-puppet clean'" do
+  describe "when running 'librarian-repo clean'" do
     temp_directory = nil
 
     before :each do
@@ -25,7 +25,7 @@ describe "Functional - Clean" do
     end
 
     it "with --path it cleans the directory" do
-      output, status = execute_captured("bin/librarian-puppet clean --path=#{temp_directory}")
+      output, status = execute_captured("bin/librarian-repo clean --path=#{temp_directory}")
 
       status.should == 0
       # Using File.exist? to be compatible with Ruby 1.8.7
@@ -33,7 +33,7 @@ describe "Functional - Clean" do
     end
 
     it "with --verbose it shows progress messages" do
-      output, status = execute_captured("bin/librarian-puppet clean --verbose --path=#{temp_directory}")
+      output, status = execute_captured("bin/librarian-repo clean --verbose --path=#{temp_directory}")
 
       status.should == 0
       output.should include("Target Directory: #{temp_directory}")
