@@ -17,7 +17,7 @@ module Librarian
       include Librarian::Repo::Util
       include Librarian::Repo::Iterator
 
-      # installs modules using the each_module method from our
+      # installs repos using the each_module method from our
       # iterator mixin
       def install!
         each_module do |repo|

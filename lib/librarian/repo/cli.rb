@@ -14,7 +14,7 @@ module Librarian
                    :desc => 'verbose output for executed commands'
 
       class_option :path, :type => :string,
-                   :desc => "overrides target directory, default is ./modules"
+                   :desc => "overrides target directory, default is ./repos"
       class_option :Repofile, :type => :string,
                    :desc => "overrides used Repofile",
                    :default => './Repofile'
@@ -30,7 +30,7 @@ module Librarian
         @verbose = options[:verbose]
         clean if options[:clean]
         @custom_module_path = options[:path]
-        # evaluate the file to populate @modules
+        # evaluate the file to populate @repos
         eval(File.read(File.expand_path(options[:Repofile])))
         install!
       end
@@ -57,9 +57,9 @@ module Librarian
         end
       end
 
-      desc 'clean', 'clean modules directory'
+      desc 'clean', 'clean repos directory'
       def clean
-        target_directory = options[:path] || File.expand_path("./modules")
+        target_directory = options[:path] || File.expand_path("./repos")
         puts "Target Directory: #{target_directory}" if options[:verbose]
         FileUtils.rm_rf target_directory
       end
@@ -67,7 +67,7 @@ module Librarian
       desc 'git_status', 'determine the current status of checked out git repos'
       def git_status
         @custom_module_path = options[:path]
-        # populate @modules
+        # populate @repos
         eval(File.read(File.expand_path(options[:Repofile])))
         each_module_of_type(:git) do |repo|
           Dir.chdir(File.join(module_path, repo[:name])) do
@@ -85,10 +85,10 @@ module Librarian
       desc 'dev_setup', 'adds development r/w remotes to each repo (assumes remote has the same name as current repo)'
       def dev_setup(remote_name)
         @custom_module_path = options[:path]
-        # populate @modules
+        # populate @repos
         eval(File.read(File.expand_path(options[:Repofile])))
         each_module_of_type(:git) do |repo|
-          Dir.chdir(File.join((options[:path] || 'modules'), repo[:name])) do
+          Dir.chdir(File.join((options[:path] || 'repos'), repo[:name])) do
             print_verbose "Adding development remote for git repo #{repo[:name]}"
             remotes = system_cmd('git remote')
             if remotes.include?(remote_name)
@@ -114,7 +114,7 @@ module Librarian
       #
       # I am not sure if anyone besides me (Dan Bode) should use this command.
       # It is specifically for the use case where you are managing downstream versions
-      # of Puppet modules, where you want to track the relationship between your downstream
+      # of Puppet repos, where you want to track the relationship between your downstream
       # forks and upstream.
       # It required a specially formatted Repofile that expects an environment variable called
       # repo_to_use that accepts the values 'upstream' and 'downstream'. It should use that environment
@@ -161,9 +161,9 @@ module Librarian
         FileUtils.mkdir_p(path)
         @custom_module_path = path
 
-        # install the downstream modules in our tmp directory and build out a hash
+        # install the downstream repos in our tmp directory and build out a hash
         downstream = build_Repofile_hash('downstream', !options[:existing_tmp_dir])
-        # just build a hash of the downstream modules
+        # just build a hash of the downstream repos
         upstream   = build_Repofile_hash('upstream', false)
 
         unless ( (downstream.keys - upstream.keys) == [] and
@@ -255,22 +255,22 @@ module Librarian
         # builds out a certain type of repo
         def build_Repofile_hash(name, perform_installation=false)
           repo_hash = {}
-          # set environment variable to determine what version of modules to install
+          # set environment variable to determine what version of repos to install
           # this assumes that the environment variable repos_to_use has been coded in
-          # your Repofile to allow installation of different versions of modules
+          # your Repofile to allow installation of different versions of repos
           ENV['repos_to_use'] = name
-          # parse Repofile and install modules in our tmp directory.
+          # parse Repofile and install repos in our tmp directory.
           eval(File.read(File.expand_path(options[:Repofile])))
-          # install modules if desired
+          # install repos if desired
           install! if perform_installation
 
-          # iterate through all git modules
+          # iterate through all git repos
           each_module_of_type(:git) do |git_repo|
             abort("Module git_repo[:name] was defined multiple times in same Repofile") if repo_hash[git_repo[:name]]
             repo_hash[git_repo[:name]] = git_repo
           end
-          # clear out the modules once finished
-          clear_modules
+          # clear out the repos once finished
+          clear_repos
           repo_hash
         end
 

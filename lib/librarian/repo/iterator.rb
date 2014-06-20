@@ -4,37 +4,37 @@ module Librarian
   module Repo
     module Iterator
 
-      # evaluate a module and add it our @modules instance variable
+      # evaluate a module and add it our @repos instance variable
       def mod(name, options = {})
-        @modules ||= {}
+        @repos ||= {}
         full_name   = name
         module_name = name.split('/', 2).last
 
         case
         when options[:git]
-          @modules[:git] ||= {}
-          @modules[:git][module_name] = options.merge(:name => module_name, :full_name => full_name)
+          @repos[:git] ||= {}
+          @repos[:git][module_name] = options.merge(:name => module_name, :full_name => full_name)
         when options[:tarball]
-          @modules[:tarball] ||= {}
-          @modules[:tarball][module_name] = options.merge(:name => module_name, :full_name => full_name)
+          @repos[:tarball] ||= {}
+          @repos[:tarball][module_name] = options.merge(:name => module_name, :full_name => full_name)
         else
-          @modules[:forge] ||= {}
-          @modules[:forge][module_name] = options.merge(:name => module_name, :full_name => full_name)
+          @repos[:forge] ||= {}
+          @repos[:forge][module_name] = options.merge(:name => module_name, :full_name => full_name)
           #abort('only the :git and :tarball providers are currently supported')
         end
       end
 
-      def modules
-        @modules
+      def repos
+        @repos
       end
 
-      def clear_modules
-        @modules = nil
+      def clear_repos
+        @repos = nil
       end
 
-      # iterate through all modules
+      # iterate through all repos
       def each_module(&block)
-        (@modules || {}).each do |type, repos|
+        (@repos || {}).each do |type, repos|
           (repos || {}).values.each do |repo|
             yield repo
           end
@@ -44,7 +44,7 @@ module Librarian
       # loop over each module of a certain type
       def each_module_of_type(type, &block)
         abort("undefined type #{type}") unless [:git, :tarball].include?(type)
-        ((@modules || {})[type] || {}).values.each do |repo|
+        ((@repos || {})[type] || {}).values.each do |repo|
           yield repo
         end
       end

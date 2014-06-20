@@ -20,7 +20,7 @@ module Librarian
           if @custom_module_path
             @module_path = File.expand_path @custom_module_path
           else
-            @module_path = File.join(dir, 'modules')
+            @module_path = File.join(dir, 'repos')
           end
           Dir.mkdir(@module_path) unless File.exists?(@module_path)
         end

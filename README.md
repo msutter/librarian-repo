@@ -1,13 +1,13 @@
 # librarian-repo
 
-This project was created out of my frustration with dependency management in librarian-repo, some people need external dependencies, I just need to be able to pin revisions for a collection of modules, and I found the dependency managment features of librarian-repo too heavy for my simple use case.
-
-This project just has fewer commands, but they should be compatible with the original librarian-repo:
+Fork of the the librarian-puppet-simple project. (https://github.com/bodepd/librarian-puppet-simple)
+As I needed to pull some repos at build time, and already was using librarian-puppet,
+I needed a new binary, xxxfile and container names.
 
 ### Clean
-Remove the directory where the modules will be installed. At the moment the supported options are:
+Remove the directory where the repos will be installed. At the moment the supported options are:
 * `--verbose` display progress messages
-* `--path` override the default `./modules` where modules will be installed
+* `--path` override the default `./repos` where repos will be installed
 
 ```
   librarian-repo clean [--verbose] [--path]
@@ -16,9 +16,9 @@ Remove the directory where the modules will be installed. At the moment the supp
 ### Install
 Iterates through your Repofile and installs git sources. At the moment the supported options are:
 * `--verbose` display progress messages
-* `--clean` remove the directory before installing modules
-* `--path` override the default `./modules` where modules will be installed
-* `--Repofile` override the default `./Repofile` used to find the modules
+* `--clean` remove the directory before installing repos
+* `--path` override the default `./repos` where repos will be installed
+* `--Repofile` override the default `./Repofile` used to find the repos
 
 ```
   librarian-repo install [--verbose] [--clean] [--path] [--Repofile]
@@ -29,15 +29,15 @@ Iterates through your Repofile and updates git sources. If a SHA-1 hash is speci
 
 Supported options are:<br/>
 <li>`--verbose` display progress messages</li>
-<li>`--path` override the default `./modules` where modules will be installed</li>
-<li> `--Repofile` override the default `./Repofile` used to find the modules</li>
+<li>`--path` override the default `./repos` where repos will be installed</li>
+<li> `--Repofile` override the default `./Repofile` used to find the repos</li>
 
 ```
   librarian-repo update [--verbose] [--path] [--Repofile]
 ```
 
 ## Repofile
-The processed Repofile may contain two different types of modules, `git` and `tarball`. The `git` option accepts an optional `ref` parameter.
+The processed Repofile may contain two different types of repos, `git` and `tarball`. The `git` option accepts an optional `ref` parameter.
 
 The module names can be namespaced, but the created directory will only contain the last part of the name. For example, a module named `puppetlabs/ntp` will generate a directory `ntp`, and so will a module simply named `ntp`.
 
