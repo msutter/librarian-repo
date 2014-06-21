@@ -31,10 +31,10 @@ module Librarian
             case
             when repo[:git]
               install_git module_path, repo[:name], repo[:git], repo[:ref]
-            when repo[:tarball]
-              install_tarball module_path, repo[:name], repo[:tarball]
+            when repo[:archive]
+              install_archive module_path, repo[:name], repo[:archive]
             else
-              abort('only the :git and :tarball provider are currently supported')
+              abort('only the :git and :archive provider are currently supported')
             end
           else
             print_verbose "\nModule #{repo[:name]} already installed in #{module_path}"
@@ -58,17 +58,17 @@ module Librarian
         end
       end
 
-      def install_tarball(module_path, module_name, remote_tarball)
+      def install_archive(module_path, module_name, remote_archive)
         Dir.mktmpdir do |tmp|
-          temp_file = File.join(tmp,remote_tarball.split('/').last)
+          temp_file = File.join(tmp,remote_archive.split('/').last)
           File.open(temp_file, "w+b") do |saved_file|
-            print_verbose "Downloading #{remote_tarball}..."
-            open(remote_tarball, 'rb') do |read_file|
+            print_verbose "Downloading #{remote_archive}..."
+            open(remote_archive, 'rb') do |read_file|
               saved_file.write(read_file.read)
             end
             saved_file.rewind
             target_directory = File.join(module_path, module_name)
-            print_verbose "Extracting #{remote_tarball} to #{target_directory}..."
+            print_verbose "Extracting #{remote_archive} to #{target_directory}..."
             case File.extname saved_file
             when '.gz'
             then
@@ -79,7 +79,7 @@ module Librarian
             then
               tarfile_full_name = unzip(saved_file.read, target_directory)
             else
-              print_verbose "\nTarball archive format not supported"
+              print_verbose "\narchive archive format not supported"
             end
           end
         end

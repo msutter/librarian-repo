@@ -38,8 +38,8 @@ Supported options are:<br/>
 ```
 
 ## Repofile
-The processed Repofile may contain two different types of repos, `git` and `tarball`. The `git` option accepts an optional `ref` parameter.
-`tarball` supoorts tar.gz and zip format.
+The processed Repofile may contain two different types of repos, `git` and `archive`. The `git` option accepts an optional `ref` parameter.
+`archive` supoorts tar.gz and zip format.
 
 The module names can be namespaced, but the created directory will only contain the last part of the name. For example, a module named `puppetlabs/ntp` will generate a directory `ntp`, and so will a module simply named `ntp`.
 
@@ -51,7 +51,7 @@ mod "puppetlabs/ntp",
     :ref => "99bae40f225db0dd052efbf1d4078a21f0333331"
 
 mod "apache",
-    :tarball => "https://forge.puppetlabs.com/puppetlabs/apache/0.6.0.tar.gz"
+    :archive => "https://forge.puppetlabs.com/puppetlabs/apache/0.6.0.tar.gz"
 ```
 
 ## Setting up for development and running the specs

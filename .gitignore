@@ -4,7 +4,8 @@
 .config
 .yardoc
 .rspec
-Gemfile.lock
+Repofile.lock
+Repofile
 InstalledFiles
 _yardoc
 coverage

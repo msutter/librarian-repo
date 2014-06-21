@@ -14,13 +14,11 @@ module Librarian
         when options[:git]
           @repos[:git] ||= {}
           @repos[:git][module_name] = options.merge(:name => module_name, :full_name => full_name)
-        when options[:tarball]
-          @repos[:tarball] ||= {}
-          @repos[:tarball][module_name] = options.merge(:name => module_name, :full_name => full_name)
+        when options[:archive]
+          @repos[:archive] ||= {}
+          @repos[:archive][module_name] = options.merge(:name => module_name, :full_name => full_name)
         else
-          @repos[:forge] ||= {}
-          @repos[:forge][module_name] = options.merge(:name => module_name, :full_name => full_name)
-          #abort('only the :git and :tarball providers are currently supported')
+          abort('only the :git and :archive providers are currently supported')
         end
       end
 
@@ -43,7 +41,7 @@ module Librarian
 
       # loop over each module of a certain type
       def each_module_of_type(type, &block)
-        abort("undefined type #{type}") unless [:git, :tarball].include?(type)
+        abort("undefined type #{type}") unless [:git, :archive].include?(type)
         ((@repos || {})[type] || {}).values.each do |repo|
           yield repo
         end

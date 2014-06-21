@@ -1,6 +1,5 @@
 repo "xPSDesiredStateConfiguration",
-    :git => "https://github.com/msutter/xPSDesiredStateConfiguration.git",
-    :path => "DSCResources"
+    :git  => "https://github.com/msutter/xPSDesiredStateConfiguration.git"
 
 repo "cim_schema_mofs",
-	:tarball => "http://dmtf.org/sites/default/files/cim/cim_schema_v2260/cim_schema_2.26.0Final-MOFs.zip"
+	:archive => "http://dmtf.org/sites/default/files/cim/cim_schema_v2260/cim_schema_2.26.0Final-MOFs.zip"
