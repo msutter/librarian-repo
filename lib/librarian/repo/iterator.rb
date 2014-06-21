@@ -5,7 +5,7 @@ module Librarian
     module Iterator
 
       # evaluate a module and add it our @repos instance variable
-      def mod(name, options = {})
+      def repo(name, options = {})
         @repos ||= {}
         full_name   = name
         module_name = name.split('/', 2).last
