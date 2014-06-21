@@ -36,7 +36,7 @@ describe "Functional - Clean" do
       output, status = execute_captured("bin/librarian-repo clean --verbose --path=#{temp_directory}")
 
       status.should == 0
-      output.should include("Target Directory: #{temp_directory}")
+      output.should include("Purging Target Directory: #{temp_directory}")
     end
   end
 end

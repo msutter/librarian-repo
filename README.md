@@ -3,7 +3,7 @@
 Fork of the the librarian-puppet-simple project. (https://github.com/bodepd/librarian-puppet-simple)
 
 As I needed to pull some repos at build time, and already was using librarian-puppet,
-I needed different binary/xxxfile/container names.
+I needed different binary/xxxfile/container names. This project also supports zip archives.
 
 ### Clean
 Remove the directory where the repos will be installed. At the moment the supported options are:

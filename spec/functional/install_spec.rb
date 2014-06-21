@@ -4,7 +4,8 @@ require 'tmpdir'
 
 describe "Functional - Install" do
   before :all do
-    warning_message = "ATTENTION: these tests download information from github.com and forge.puppetlabs.com"
+    warning_message = "ATTENTION: these tests download information from github.com"
+    puts "\n"
     puts '*' * warning_message.length
     puts warning_message
     puts '*' * warning_message.length
