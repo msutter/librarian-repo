@@ -1,8 +1,9 @@
 # librarian-repo
 
 Fork of the the librarian-puppet-simple project. (https://github.com/bodepd/librarian-puppet-simple)
+
 As I needed to pull some repos at build time, and already was using librarian-puppet,
-I needed a new binary, xxxfile and container names.
+I needed different binary/xxxfile/container names.
 
 ### Clean
 Remove the directory where the repos will be installed. At the moment the supported options are:
@@ -38,6 +39,7 @@ Supported options are:<br/>
 
 ## Repofile
 The processed Repofile may contain two different types of repos, `git` and `tarball`. The `git` option accepts an optional `ref` parameter.
+`tarball` supoorts tar.gz and zip format.
 
 The module names can be namespaced, but the created directory will only contain the last part of the name. For example, a module named `puppetlabs/ntp` will generate a directory `ntp`, and so will a module simply named `ntp`.
 

@@ -60,7 +60,7 @@ module Librarian
       desc 'clean', 'clean repos directory'
       def clean
         target_directory = options[:path] || File.expand_path("./repos")
-        puts "Target Directory: #{target_directory}" if options[:verbose]
+        puts "Purging target Directory: #{target_directory}" if options[:verbose]
         FileUtils.rm_rf target_directory
       end
 

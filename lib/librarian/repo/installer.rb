@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'rubygems/package'
 require 'zlib'
+require 'zipruby'
 require 'open-uri'
 require 'librarian/repo/util'
 require 'librarian/repo/iterator'
@@ -59,19 +60,27 @@ module Librarian
 
       def install_tarball(module_path, module_name, remote_tarball)
         Dir.mktmpdir do |tmp|
-          temp_file = File.join(tmp,"downloaded_module.tar.gz")
+          temp_file = File.join(tmp,remote_tarball.split('/').last)
           File.open(temp_file, "w+b") do |saved_file|
             print_verbose "Downloading #{remote_tarball}..."
             open(remote_tarball, 'rb') do |read_file|
               saved_file.write(read_file.read)
             end
             saved_file.rewind
-
             target_directory = File.join(module_path, module_name)
             print_verbose "Extracting #{remote_tarball} to #{target_directory}..."
-            unzipped_target = ungzip(saved_file)
-            tarfile_full_name = untar(unzipped_target, module_path)
-            FileUtils.mv File.join(module_path, tarfile_full_name), target_directory
+            case File.extname saved_file
+            when '.gz'
+            then
+              unzipped_target = ungzip(saved_file)
+              tarfile_full_name = untar(unzipped_target, module_path)
+              FileUtils.mv File.join(module_path, tarfile_full_name), target_directory
+            when '.zip'
+            then
+              tarfile_full_name = unzip(saved_file.read, target_directory)
+            else
+              print_verbose "\nTarball archive format not supported"
+            end
           end
         end
       end
@@ -93,6 +102,7 @@ module Librarian
           tar.each do |tarfile|
             tarfile_full_name ||= tarfile.full_name
             destination_file = File.join destination, tarfile.full_name
+
             if tarfile.directory?
               FileUtils.mkdir_p destination_file
             else
@@ -106,6 +116,31 @@ module Librarian
         end
         tarfile_full_name
       end
+
+      # unzips the given IO into the specified
+      # directory
+      def unzip(io, destination)
+        Zip::Archive.open_buffer(io) do |archive|
+          archive.each do |zipfile|
+            destination_file = File.join destination, zipfile.name
+            if zipfile.directory?
+              FileUtils.mkdir_p destination_file
+            else
+              destination_directory = File.dirname(destination_file)
+              FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
+              File.open destination_file, "wb" do |f|
+                f.write zipfile.read
+              end
+            end
+
+          end
+        end
+      end
+
+
+      def write()
+      end
+
     end
   end
 end

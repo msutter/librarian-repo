@@ -1,3 +1,6 @@
 mod "xPSDesiredStateConfiguration",
-    :git => "https://github.com/msutter/xPSDesiredStateConfiguration.git"
+    :git => "https://github.com/msutter/xPSDesiredStateConfiguration.git",
+    :path => "DSCResources"
 
+mod "cim_schema_mofs",
+	:tarball => "http://dmtf.org/sites/default/files/cim/cim_schema_v2260/cim_schema_2.26.0Final-MOFs.zip"

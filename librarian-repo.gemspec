@@ -19,6 +19,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency "thor", "~> 0.15"
+  gem.add_dependency "zipruby"
+
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec", "~> 2.13"
