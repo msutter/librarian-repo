@@ -61,11 +61,12 @@ bundle exec install --path=vendor
 bundle exec rspec
 ```
 
-Beware that the functional tests will download files from GitHub and PuppetForge and will break if either is unavailable.
+Beware that the functional tests will download files from GitHub and will break if either is unavailable.
 
 ## License
 
 See [LICENSE](/LICENSE)
 
 ## Credits
+The main project came form https://github.com/bodepd/librarian-puppet-simple
 The untar and ungzip methods came from https://gist.github.com/sinisterchipmunk/1335041
